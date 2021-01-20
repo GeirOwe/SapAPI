@@ -46,28 +46,44 @@ def connect_to_api():
     return response
 #end function
 
+#start function
+def clear_console():
+    os.system('clear')
+    print(' ... ut å se etter SAP data ... ')
+    print(' ------------------------------\n')
+#end function
+
+#start function
+def print_API_data(response):
+    print(response.text)                # data received
+    apiData = response.json()           # API returns json inside a python list
+    #print out first data item received
+    xDict = apiData[0]
+    print('.. print the first row of data received fom the SAP ODATA service ..\n')
+    for key, values in xDict.items():
+        print(key, ': ', values) 
+#end function
+
 #the main module
 def main_module():
+    clear_console()
+    
     #call api
     response = connect_to_api()
-    #check response; if error or empty dataset received
-    if (response.status_code > 299) or (len(response.json()) == 0):
+    apiError = (response.status_code > 299)
+    if apiError:
         err_msg = check_error_msg(response)
         print(err_msg)
-    else :
-        print(response.text)                # data received
-        apiData = response.json()           # API returns json inside a python list
-        #print out first data item received
-        xDict = apiData[0]
-        print('.. print the first row of data received fom the SAP ODATA service ..\n')
-        for key, values in xDict.items():
-            print(key, ': ', values) 
+    else:
+        emptyDataset = (len(response.json()) == 0)
+        if emptyDataset:
+            err_msg = check_error_msg(response)
+            print(err_msg)
+        else :        
+            print_API_data(response)   
 #end main module
 
 # -- start of programme ----
 if __name__ == '__main__':
-    os.system('clear')
-    print(' ... ut å se etter SAP data ... ')
-    print(' ------------------------------\n')
     main_module()
     print()
