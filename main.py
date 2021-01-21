@@ -21,7 +21,7 @@ def check_error_msg(response):
 
 #start function
 def get_token():
-    theToken = '<.. add token from Postman ..>'
+    theToken = '<.. replace with token (from Postman) ..>'
     return theToken
 #end function
 
