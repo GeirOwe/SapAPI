@@ -34,7 +34,7 @@ def check_if_error(response):
 #start function
 def get_token():
     #theToken = '<.. replace with token (from Postman) ..>'
-    theToken = 'eyJ0eXAiOiJKV1QiLCJhbG ..'
+    theToken = '.. eyJ0eXAiOiJKV1QiLCJhbG ..'
     return theToken
 #end function
 
