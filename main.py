@@ -24,17 +24,16 @@ def check_if_error(response):
         err_msg = 'Most likely the token has gotten a timeout, refresh the token. Error code ' + str(response.status_code) + ' - ' + response.reason
     else:
         err_msg = 'error received from the API. Error code ' + str(response.status_code) + ' - ' + response.reason
-    #if error the print error message
-    if apiOK == False:
-        print(err_msg)
 
-    return apiOK
+    return apiOK, err_msg
 #end function
 
 #start function
 def get_token():
     theToken = os.getenv("TOKEN")           # from the .env file
+    print('token: ', theToken)
     APIkey = os.getenv("API_KEY")           # from the .env file
+    print('apikey: ', APIkey)
     return theToken
 #end function
 
@@ -61,8 +60,8 @@ def connect_to_api():
 #start function
 def clear_console():
     os.system('clear')
-    print(' ... ut å se etter SAP data ... ')
-    print(' ------------------------------\n')
+    print(' ... looking for data in the SAP API ... ')
+    print(' ---------------------------------------\n')
 #end function
 
 #start function
@@ -80,9 +79,12 @@ def print_the_data(response):
 def main_module():
     clear_console()
     response = connect_to_api()
-    apiOK = check_if_error(response)
+    apiOK, err_msg = check_if_error(response)
+    # print feedback from API; data or error message
     if apiOK:
-        print_the_data(response)   
+        print_the_data(response) 
+    else:
+        print(err_msg)  
 #end main module
 
 # -- start of programme ----
