@@ -33,15 +33,15 @@ def check_if_error(response):
 
 #start function
 def get_token():
-    #theToken = '<replace with token (from Postman)>'
-    theToken = 'eyJ0eXAiOiJKV1QiLCJhbG ..........'
+    theToken = os.getenv("TOKEN")           # from the .env file
+    APIkey = os.getenv("API_KEY")           # from the .env file
     return theToken
 #end function
 
 #start function
 def connect_to_api():
     # get access token
-    theToken = get_token()
+    theToken = str(get_token())
     
     #URL and identity data
     url = "https://api-dev.gateway.equinor.com/sap-api-basic/ProductSet('HT-1000')"
