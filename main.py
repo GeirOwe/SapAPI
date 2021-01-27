@@ -31,9 +31,7 @@ def check_if_error(response):
 #start function
 def get_token():
     theToken = os.getenv("TOKEN")           # from the .env file
-    print('token: ', theToken)
     APIkey = os.getenv("API_KEY")           # from the .env file
-    print('apikey: ', APIkey)
     return theToken
 #end function
 
