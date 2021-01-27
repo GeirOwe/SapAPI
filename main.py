@@ -88,4 +88,4 @@ def main_module():
 # -- start of programme ----
 if __name__ == '__main__':
     main_module()
-    print()
+
