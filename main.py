@@ -12,7 +12,8 @@ def check_if_error(response):
     
     #ok? empty data set?
     if response.status_code < 299:      
-        emptyDataset = (len(response.json()) == 0)
+        #emptyDataset = (len(response.json()) == 0)
+        emptyDataset = False
         if emptyDataset: 
             err_msg = 'for some reason we can not provide the data today - even if the response is: ' + response.reason
             apiOK = False
@@ -31,7 +32,7 @@ def check_if_error(response):
 #start function
 def get_token():
     theToken = os.getenv("TOKEN")           # from the .env file
-    APIkey = os.getenv("API_KEY")           # from the .env file
+    #APIkey = os.getenv("API_KEY")           # from the .env file
     return theToken
 #end function
 
@@ -41,10 +42,8 @@ def connect_to_api():
     theToken = str(get_token())
     
     #URL and identity data
-    url = "https://api-dev.gateway.equinor.com/sap-api-basic/ProductSet('HT-1000')"
-    payload = {
-        'format': 'json'
-    }
+    url = "https://api-dev.gateway.equinor.com/sap-api-basic/ProductSet('HT-1000')?$format=json"
+    payload = {}
     headers = {
         'Ocp-Apim-Trace': 'true',
         'Authorization': 'Bearer ' + theToken,
@@ -63,14 +62,29 @@ def clear_console():
 #end function
 
 #start function
+def read_sap_system(value):
+    systemURI = value.get('uri')
+    res = systemURI.split('https://SAP')
+    sapSystem = res[1][0:3]
+    return sapSystem
+#end function
+
+#start function
 def print_the_data(response):
-    print(response.text)                # data received
     apiData = response.json()           # API returns json inside a python list
     #print out first data item received
-    xDict = apiData[0]
-    print('.. print the first row of data received fom the SAP ODATA service ..\n')
+    xDict = apiData.get('d')
+    tagsToExclude = ["__metadata", "ToSalesOrderLineItems", "ToSupplier", 
+                        "CreatedAt", "ChangedAt", "DescriptionLanguage", "SupplierID", 
+                        "SupplierName", "TaxTarifCode", "MeasureUnit" ]
     for key, values in xDict.items():
-        print(key, ': ', values) 
+        if key in tagsToExclude:
+            if key == "__metadata":
+                sapSystem = read_sap_system(values)
+                print('the API provides ODATA from SAP system', sapSystem, '\n')
+        else:
+            print(key, ': ', values) 
+    print()
 #end function
 
 #the main module
@@ -80,7 +94,7 @@ def main_module():
     apiOK, err_msg = check_if_error(response)
     # print feedback from API; data or error message
     if apiOK:
-        print_the_data(response) 
+        print_the_data(response)
     else:
         print(err_msg)  
 #end main module
