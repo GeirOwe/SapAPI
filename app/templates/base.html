@@ -1,0 +1,18 @@
+<html>
+    <head>
+        {% if title %}
+        <title>{{ title }} - SAP API</title>
+        {% else %}
+        <title>The best run SAP</title>
+        {% endif %}
+      </head>
+    <body>
+        <div>
+            SAP API 
+            <a href="{{ url_for('home') }}"> ( get data ) </a>
+            <a href="{{ url_for('about') }}"> ( About ) </a>
+        </div>
+        <hr>
+        {% block content %}{% endblock %}
+    </body>
+</html>

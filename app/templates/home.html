@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>data received from SAP API</h1>
+    <h3>received from backend SAP system {{ system }} in Equinor </h3>
+    {% for product in products %}
+    <div>
+        <p>The {{ product.ProductID }} {{ product.Name }} weighs  {{ product.WeightMeasure }}{{ product.WeightUnit }} 
+            and cost {{ product.CurrencyCode }} {{ product.Price }}. 
+            WxDxH is {{ product.Width }}x{{ product.Depth }}x{{ product.Height }} {{ product.DimUnit }}
+        </p>
+    </div>
+    {% endfor %}
+    <h3>... SAP, a frontrunner into Omnia ...</h3>
+{% endblock %}
