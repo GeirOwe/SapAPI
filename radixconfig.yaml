@@ -1,0 +1,21 @@
+{
+    "apiVersion": "radix.equinor.com/v1",
+    "kind": "RadixApplication",
+    "metadata": { "name": "sapAPI" },
+    "spec": {
+        "environments": [
+           { "name": "dev", "build": { "from": "master" } }
+        ],
+        "components": [
+            {
+                "name": "main",
+                "src": ".",
+                "public": "true",
+                "publicPort": "http",
+                "ports": [
+                     { "name": "http", "port": 5000 }
+                ]
+            }
+        ]
+    }
+}
