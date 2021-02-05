@@ -10,8 +10,7 @@ import json
 def check_if_error(response):
     #testing the response code -> 200 success. 401/403 no authorization. 404 not found    
     apiOK = False
-    err_msg = ''
-    
+    err_msg = 'all good'
     #ok? empty data set?
     if response.status_code < 299:      
         #emptyDataset = (len(response.json()) == 0)
@@ -27,22 +26,19 @@ def check_if_error(response):
         err_msg = 'Most likely the token has gotten a timeout, refresh the token. Error code ' + str(response.status_code) + ' - ' + response.reason
     else:
         err_msg = 'error received from the API. Error code ' + str(response.status_code) + ' - ' + response.reason
-
-    return apiOK, err_msg
+    print(err_msg)
+    return apiOK
 #end function
 
 #start function
-def get_token():
-    theToken = os.getenv("TOKEN")           # from the .env file
-    #APIkey = os.getenv("API_KEY")           # from the .env file
-    return theToken
+#def get_token(myTokenObj):    
+#    #theToken = os.getenv("TOKEN")           # from the .env file
+#    theToken = myTokenObj.get_token()
+#    return theToken
 #end function
 
 #start function
-def connect_to_api():
-    # get access token
-    theToken = str(get_token())
-    
+def connect_to_api(theToken):
     #URL and identity data
     url = "https://api-dev.gateway.equinor.com/sap-api-basic/ProductSet?$format=json"
     payload = {}
@@ -109,9 +105,11 @@ def print_the_data(response):
 #end function
 
 #the main module
-def main_module():
-    response = connect_to_api()
-    apiOK, err_msg = check_if_error(response)
+def main_module(myTokenObj):
+    # get access token
+    theToken = str(myTokenObj.get_token())
+    response = connect_to_api(theToken)
+    apiOK = check_if_error(response)
     productList = ''
     sapSystem = ''
     # print feedback from API; data or error message
@@ -123,6 +121,7 @@ def main_module():
 # -- start of programme ----
 if __name__ == '__main__':
     clear_console()
-    productList, sapSystem = main_module()
+    productList = '<empty>'
+    #productList, sapSystem = main_module()
     print(productList)
 

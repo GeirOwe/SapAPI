@@ -1,7 +1,7 @@
 <html>
     <head>
         {% if title %}
-        <title>{{ title }} - SAP API</title>
+        <title>The best run SAP</title>
         {% else %}
         <title>The best run SAP</title>
         {% endif %}
@@ -10,7 +10,8 @@
         <div>
             SAP API 
             <a href="{{ url_for('home') }}"> ( get data ) </a>
-            <a href="{{ url_for('about') }}"> ( About ) </a>
+            <a href="{{ url_for('about') }}"> ( about ) </a>
+            <a href="{{ url_for('token') }}"> ( token ) </a>        
         </div>
         <hr>
         {% block content %}{% endblock %}

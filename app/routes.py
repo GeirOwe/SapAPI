@@ -8,18 +8,36 @@
 from flask import render_template, flash, redirect, url_for
 from app import app
 from app.models import *
+from app.forms import GetToken, MyToken
 
+#a token object
+myTokenObj = MyToken()
+
+#get the token
 @app.route('/')
+@app.route('/token', methods=['GET', 'POST'])
+def token():
+    form = GetToken()
+    if form.validate_on_submit():
+        #collect all data in a list
+        theToken = form.token.data
+        myTokenObj.set_token(theToken)
+        return redirect(url_for('home'))
+    else:
+        flash(" ... hent token fra Postman ...")
+    return render_template('token.html', title='Get token', form=form)
+
+#read data
 @app.route('/home')
 def home():
-    user = {'username': 'GeirOwe'}
-    products, sapSystem = main_module()
+    products, sapSystem = main_module(myTokenObj)
     system = sapSystem
-    return render_template('home.html', title='oData received from SAP API', user=user, products=products, system=system)
+    return render_template('home.html', title='oData received from SAP API', products=products, system=system)
 
 #the list of wines that is to young to drink
 @app.route('/about')
 def about():
-    user = {'username': 'GeirOwe'}
     aboutX = ' .. under construction ..'
-    return render_template('about.html', title='About this app', user=user, aboutX=aboutX)
+    return render_template('about.html', title='About this app', aboutX=aboutX)
+
+
