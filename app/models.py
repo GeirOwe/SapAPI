@@ -5,6 +5,9 @@ import pandas as pd
 import os
 import requests                         #the library in python 3.x best suited to read REST API
 import json
+import urllib
+import config
+from flask import request
 
 #start function
 def check_if_error(response):
@@ -13,8 +16,8 @@ def check_if_error(response):
     err_msg = 'all good'
     #ok? empty data set?
     if response.status_code < 299:      
-        #emptyDataset = (len(response.json()) == 0)
-        emptyDataset = False
+        emptyDataset = (len(response.json()) == 0)
+        #emptyDataset = False
         if emptyDataset: 
             err_msg = 'for some reason we can not provide the data today - even if the response is: ' + response.reason
             apiOK = False
@@ -31,21 +34,13 @@ def check_if_error(response):
 #end function
 
 #start function
-#def get_token(myTokenObj):    
-#    #theToken = os.getenv("TOKEN")           # from the .env file
-#    theToken = myTokenObj.get_token()
-#    return theToken
-#end function
-
-#start function
 def connect_to_api(theToken):
     #URL and identity data
     url = "https://api-dev.gateway.equinor.com/sap-api-basic/ProductSet?$format=json"
     payload = {}
     headers = {
         'Ocp-Apim-Trace': 'true',
-        'Authorization': 'Bearer ' + theToken,
-        'Cookie': 'sap-usercontext=sap-client=235'
+        'Authorization': 'Bearer ' + theToken
     }
     # send the request to the api
     response = requests.request("GET", url, headers=headers, data=payload)
@@ -105,9 +100,9 @@ def print_the_data(response):
 #end function
 
 #the main module
-def main_module(myTokenObj):
+def main_module(theToken):
     # get access token
-    theToken = str(myTokenObj.get_token())
+    #theToken = str(myTokenObj.get_token())
     response = connect_to_api(theToken)
     apiOK = check_if_error(response)
     productList = ''
