@@ -16,10 +16,7 @@ REDIRECT_PATH = "/getAToken"  # Used for forming an absolute URL to your redirec
                               # in the app's registration in the Azure portal.
 
 ENDPOINT = 'http://localhost:5000/'  
-#ENDPOINT = 'https://graph.microsoft.com/v1.0/users'  # This resource requires no admin consent
 
-# You can find the proper permission names from this document
-# https://docs.microsoft.com/en-us/graph/permissions-reference
 SCOPE = ["User.ReadBasic.All"]
 
 SESSION_TYPE = "filesystem"  # Specifies the token cache should be stored in server-side session

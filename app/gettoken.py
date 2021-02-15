@@ -4,6 +4,7 @@ from flask import Flask, render_template, session, request, redirect, url_for
 from flask_session import Session  # https://pythonhosted.org/Flask-Session
 import msal
 import config
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from flask import flash
 from app import app
@@ -14,7 +15,6 @@ from app.forms import GetToken, MyToken
 Session(app)
 
 # See also https://flask.palletsprojects.com/en/1.0.x/deploying/wsgi-standalone/#proxy-setups
-from werkzeug.middleware.proxy_fix import ProxyFix
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
 @app.route("/index")
