@@ -84,10 +84,8 @@ def token():
         flash(" ... hent token fra Postman ...")
     return render_template('token.html', title='Get token', form=form)
 
-#read the SAP API based on token
-
-    
-
+###########
+#MSAL below
 ###########
 
 def _load_cache():
@@ -99,7 +97,7 @@ def _load_cache():
 def _save_cache(cache):
     if cache.has_state_changed:
         session["token_cache"] = cache.serialize()
-        print(session["token_cache"])
+        #print(session["token_cache"])
 
 def _build_msal_app(cache=None, authority=None):
     return msal.ConfidentialClientApplication(

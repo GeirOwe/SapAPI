@@ -57,6 +57,8 @@ def clear_console():
 #start function
 def read_sap_system(systemURI):
     res = systemURI.split('https://SAP')
+    if len(res) == 1:
+        res = systemURI.split('http://SAP')
     sapSystem = res[1][0:3]
     return sapSystem
 #end function
@@ -65,10 +67,15 @@ def read_sap_system(systemURI):
 def translate_json(xDict):
     df = pd.json_normalize(xDict['results'])
     productList = []
-    noOfRowsToShow = 15
+    #display max 15 rows
+    noOfRowsToShow = len(xDict['results'])
+    if noOfRowsToShow > 15:
+        noOfRowsToShow = 15
+    #loop thru the data received and append to a list
     sapSystem = ''
     i = 0
     for idx, row in df.iterrows():
+        # fetch what SAP system the API is connected to
         if sapSystem == '':
             sapSystem = read_sap_system(row['__metadata.uri'])
         i += 1
@@ -93,7 +100,6 @@ def translate_json(xDict):
 #start function
 def print_the_data(response):
     apiData = response.json()           # API returns json inside a python list
-    #print out first data item received
     xDict = apiData.get('d')
     productList, sapSystem = translate_json(xDict)
     return productList, sapSystem
@@ -102,7 +108,6 @@ def print_the_data(response):
 #the main module
 def main_module(theToken):
     # get access token
-    #theToken = str(myTokenObj.get_token())
     response = connect_to_api(theToken)
     apiOK = check_if_error(response)
     productList = ''
