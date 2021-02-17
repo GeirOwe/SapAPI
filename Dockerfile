@@ -19,7 +19,7 @@ RUN pip install --no-cache-dir pandas
 # for the app to run
 COPY main.py .
 COPY config.py .
-COPY .env .
+#COPY .env .
 COPY app/*.py app/
 COPY app/templates/*.html app/templates/
 
