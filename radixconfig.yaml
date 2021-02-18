@@ -13,11 +13,12 @@ spec:
       ports:
         - name: http
           port: 5000
+      public: true
       environmentConfig:
         - environment: dev
           variables:
-			CLIENT_ID: "a20b05b6-bedc-4006-9fbd-74d5c5a85882",
-			API_BASE: "https://login.microsoftonline.com/",
-			TENANT_ID: "3aa4a235-b6e2-48d5-9195-7fcf05b459b0"
+            CLIENT_ID: "a20b05b6-bedc-4006-9fbd-74d5c5a85882"
+            API_BASE: "https://login.microsoftonline.com/"
+            TENANT_ID: "3aa4a235-b6e2-48d5-9195-7fcf05b459b0"
       secrets:
         - CLIENT_SECRET
