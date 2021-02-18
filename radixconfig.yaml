@@ -1,7 +1,7 @@
 apiVersion: radix.equinor.com/v1
 kind: RadixApplication
 metadata:
-  name: sapAPI
+  name: sapapi
 spec:
   environments:
     - name: dev
