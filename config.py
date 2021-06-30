@@ -11,9 +11,14 @@ REDIRECT_PATH = "/getAToken"  # Used for forming an absolute URL to your redirec
                               # The absolute URL must match the redirect URI you set
                               # in the app's registration in the Azure portal.
 
+#the url and scope for the api we are to connect to (defined in azure portal for the api)
 ENDPOINT = 'https://api-dev.gateway.equinor.com/sap-api-basic/ProductSet'  
-
 SCOPE = ["api://ff7b420c-0c08-4e72-826b-b531bfc1dbc0/Products.Read"]
+
+#basicPL apiet
+SCOPEPL = ["https://StatoilSRM.onmicrosoft.com/1259e78a-ae07-4035-838c-2d5168271456/user_impersonation"]
+REDIRECT_PATHPL = "/getAToken"
+
 
 SESSION_TYPE = "filesystem"  # Specifies the token cache should be stored in server-side session
 

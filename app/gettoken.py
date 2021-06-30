@@ -10,6 +10,7 @@ from flask import flash
 from app import app
 from app.models import *
 from app.forms import GetToken, MyToken
+from app.modelsPL import *
 
 #start a session to manage the cache and tokens
 Session(app)
@@ -43,7 +44,12 @@ def authorized():
         _save_cache(cache)
     except ValueError:  # Usually caused by CSRF
         pass  # Simply ignore them
-    return redirect(url_for("index"))
+    #check what scope - PL or ODATA API
+    currentScope = result.get('scope')
+    if 'Statoil' in currentScope:
+        return redirect(url_for("pllogon"))
+    else:
+        return redirect(url_for("index"))
 
 @app.route("/logout")
 def logout():
@@ -58,31 +64,44 @@ def home():
     #get token from cache
     tokenFromCache = _get_token_from_cache(config.SCOPE)
     theToken = tokenFromCache['access_token']
-
     #read the SAP API based on token
     products, sapSystem = main_module(theToken)
     system = sapSystem
     return render_template('home.html', title='oData received from SAP API', products=products, system=system)
 
+#start / home for the app
 @app.route("/")
 @app.route('/about')
 def about():
     aboutX = ''
     return render_template('about.html', title='About this app', aboutX=aboutX)
 
-#get the token - workaround
-@app.route('/token', methods=['GET', 'POST'])
-def token():
-    form = GetToken()
-    if form.validate_on_submit():
-        #collect all data in a list
-        theToken = form.token.data
-        products, sapSystem = main_module(theToken)
-        system = sapSystem
-        return render_template('home.html', title='oData received from SAP API', products=products, system=system)
-    else:
-        flash(" ... hent token fra Postman ...")
-    return render_template('token.html', title='Get token', form=form)
+
+#test accessing the Basic PL api
+@app.route("/plapi")
+def plapi():
+    # Technically we could use empty list [] as scopes to do just sign in,
+    # here we choose to also collect end user consent upfront
+    session["flow"] = _build_auth_code_flow(scopes=config.SCOPEPL)
+    return render_template("login.html", auth_url=session["flow"]["auth_uri"], version=msal.__version__)
+
+#access towards PL api ok?
+@app.route("/pllogon")
+def pllogon():
+    if not session.get("user"):
+        return redirect(url_for("login"))
+    return render_template('employee.html', user=session["user"], version=msal.__version__)
+
+#read PL data
+@app.route('/pldata')
+def pldata():
+    #get token from cache
+    tokenFromCache = _get_token_from_cache(config.SCOPEPL)
+    theToken = tokenFromCache['access_token']
+    #read the Basic PL API based on token
+    employee, sapSystem = pl_module(theToken)
+    system = sapSystem
+    return render_template('empldata.html', title='oData received from Basic PL API', employee=employee, system=system)
 
 ###########
 #MSAL below
