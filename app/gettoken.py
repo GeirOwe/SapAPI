@@ -11,6 +11,7 @@ from app import app
 from app.models import *
 from app.forms import GetToken, MyToken
 from app.modelsPL import *
+from app.modelsSCM import *
 
 #start a session to manage the cache and tokens
 Session(app)
@@ -102,6 +103,32 @@ def pldata():
     employee, sapSystem = pl_module(theToken)
     system = sapSystem
     return render_template('empldata.html', title='oData received from Basic PL API', employee=employee, system=system)
+
+#test accessing the SCM api
+@app.route("/scmapi")
+def scmapi():
+    # Technically we could use empty list [] as scopes to do just sign in,
+    # here we choose to also collect end user consent upfront
+    session["flow"] = _build_auth_code_flow(scopes=config.SCOPESCM)
+    return render_template("login.html", auth_url=session["flow"]["auth_uri"], version=msal.__version__)
+
+#access towards SCM api ok?
+@app.route("/scmlogon")
+def scmlogon():
+    if not session.get("user"):
+        return redirect(url_for("login"))
+    return render_template('scm.html', user=session["user"], version=msal.__version__)
+
+#read SCM data
+@app.route('/scmdata')
+def scmdata():
+    #get token from cache
+    tokenFromCache = _get_token_from_cache(config.SCOPESCM)
+    theToken = tokenFromCache['access_token']
+    #read the SCM Dev API based on token
+    SCMdata, sapSystem = scm_module(theToken)
+    system = sapSystem
+    return render_template('SCMdata.html', title='oData received from SCM API', SCMdata=SCMdata, system=system)
 
 ###########
 #MSAL below

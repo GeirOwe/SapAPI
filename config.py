@@ -17,8 +17,13 @@ SCOPE = ["api://ff7b420c-0c08-4e72-826b-b531bfc1dbc0/Products.Read"]
 
 #basicPL apiet
 SCOPEPL = ["https://StatoilSRM.onmicrosoft.com/1259e78a-ae07-4035-838c-2d5168271456/user_impersonation"]
+ENDPOINTPL = "https://api.gateway.equinor.com/basic-pl-api-employee-internal/v1/Employee"
 REDIRECT_PATHPL = "/getAToken"
 
+#SCMDev apiet
+SCOPESCM=["api://f5e64196-527b-4bc2-8338-d8bf4075f6e0/SCMAPIDev"]
+ENDPOINTSCM = "https://api-dev.gateway.equinor.com/scm-api/v1/Ping"
+REDIRECT_PATHPL="/getAToken"
 
 SESSION_TYPE = "filesystem"  # Specifies the token cache should be stored in server-side session
 

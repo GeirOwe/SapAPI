@@ -23,6 +23,11 @@ COPY config.py .
 COPY app/*.py app/
 COPY app/templates/*.html app/templates/
 
+#Add a new user "gow" with user id 6866
+#RUN useradd -u 6866 gow
+#Change to non-root privilege
+#USER gow
+
 ENV FLASK_APP main.py
 
 EXPOSE 5000

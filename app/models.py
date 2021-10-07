@@ -36,7 +36,8 @@ def check_if_error(response):
 #start function
 def connect_to_api(theToken):
     #URL and identity data
-    url = "https://api-dev.gateway.equinor.com/sap-api-basic/ProductSet?$format=json"
+    #url = "https://api-dev.gateway.equinor.com/sap-api-basic/ProductSet?$format=json"
+    url = config.ENDPOINT + "?$format=json"
     payload = {}
     headers = {
         'Ocp-Apim-Trace': 'true',
