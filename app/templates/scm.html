@@ -8,7 +8,7 @@
     <h2>Welcome {{ user.get("name") }}!</h2>
 
     {% if config.get("ENDPOINT") %}
-      <li><a href='/scmdata'>Connect to the SCM API</a></li>
+      <li><a href='/scmdata'>Connect to the SCM API in Dev</a></li>
     {% endif %}
 
     {% if config.get("B2C_PROFILE_AUTHORITY") %}

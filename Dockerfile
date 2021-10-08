@@ -15,6 +15,11 @@ RUN pip install -r requirements.txt
 RUN pip install requests
 RUN pip install --no-cache-dir pandas
 
+#Add a new nonroot user
+#RUN useradd -u 8877 nonroot
+#Change to non-root privilege
+USER 101
+
 # Copy the files you have created earlier into our image 
 # for the app to run
 COPY main.py .
@@ -22,11 +27,6 @@ COPY config.py .
 #COPY .env .
 COPY app/*.py app/
 COPY app/templates/*.html app/templates/
-
-#Add a new user "gow" with user id 6866
-#RUN useradd -u 6866 gow
-#Change to non-root privilege
-#USER gow
 
 ENV FLASK_APP main.py
 
