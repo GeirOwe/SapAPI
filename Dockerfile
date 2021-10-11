@@ -15,8 +15,6 @@ RUN pip install -r requirements.txt
 RUN pip install requests
 RUN pip install --no-cache-dir pandas
 
-#Add a new nonroot user
-#RUN useradd -u 8877 nonroot
 #Change to non-root privilege
 USER 101
 
@@ -24,10 +22,10 @@ USER 101
 # for the app to run
 COPY main.py .
 COPY config.py .
-#COPY .env .
 COPY app/*.py app/
 COPY app/templates/*.html app/templates/
 
+# the flask app to be run
 ENV FLASK_APP main.py
 
 EXPOSE 5000
