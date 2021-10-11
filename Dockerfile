@@ -3,6 +3,8 @@ FROM python:3.9.5-slim-buster
 
 # create the app user
 RUN addgroup --system app && adduser --system --group app
+#RUN addgroup --system --group 101 app 
+#RUN adduser --system --user 101 --group app app 
 
 # create the appropriate directories
 ENV APP_HOME=/sapapi
@@ -21,12 +23,11 @@ COPY config.py .
 COPY app/*.py app/
 COPY app/templates/*.html app/templates/
 
-# Establish the runtime user (with no password and no sudo)
-# chown all the files to the app user
+# chown all the files to the user
 RUN chown -R app:app $APP_HOME
 
 # change to the app user
-USER app
+USER 101
 
 # the flask app to be run
 ENV FLASK_APP main.py
