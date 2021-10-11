@@ -23,13 +23,13 @@ COPY app/*.py app/
 COPY app/templates/*.html app/templates/
 
 # Establish the runtime user (with no password and no sudo)
-RUN useradd -u 1001 sapuser && chown -R sapuser /sapapi
-USER sapuser
-# Invalid file permissions in the container. If you are reading, writing, or 
-# creating a file within your container, a non-root user #might not have access 
-# to folders or files in specific directories unless directly given.
+# RUN useradd -u 1001 sapuser && chown -R sapuser /sapapi
+# If you are reading, writing, or creating a file within your container, 
+# a non-root user #might not have access to folders or files in specific 
+# directories unless directly given. 
 # Adds permission for appuser (non-root) to access the /flask folder
-RUN chown -R sapuser /sapapi/flask_session
+USER 101
+RUN chown -R 101 /sapapi/flask_session
 
 # the flask app to be run
 ENV FLASK_APP main.py
