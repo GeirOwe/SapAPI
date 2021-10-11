@@ -15,15 +15,18 @@ RUN pip install -r requirements.txt
 RUN pip install requests
 RUN pip install --no-cache-dir pandas
 
-#Change to non-root privilege
-USER 101
-
 # Copy the files you have created earlier into our image 
 # for the app to run
 COPY main.py .
 COPY config.py .
 COPY app/*.py app/
 COPY app/templates/*.html app/templates/
+
+# Establish the runtime user (with no password and no sudo)
+RUN useradd -u 1001 sapuser && chown -R sapuser /sapapi
+USER sapuser
+# Adds permission for appuser (non-root) to access the /flask folder
+RUN chown -R sapuser /flask_session
 
 # the flask app to be run
 ENV FLASK_APP main.py
