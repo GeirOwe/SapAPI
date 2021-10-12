@@ -6,7 +6,7 @@ import requests
 import config
 
 #connect to the api
-def connect_to_api(theToken, inPernr):
+def connect_to_api(theToken, emplNo):
     #inKey = input('Oppgi subscription for geir owe (from api hub): ')
     inKey = 'dcc2d55f467b43699dfbe87f38b5319c'
 
@@ -19,7 +19,7 @@ def connect_to_api(theToken, inPernr):
         'Authorization': 'Bearer ' + theToken
     }
     params = {
-        'PERNR': inPernr
+        'PERNR': emplNo
     }
     #the request to get the API data
     response = requests.request("GET", url, headers=headers, params = params)
@@ -37,10 +37,6 @@ def check_if_error(response):
         #reading the list item to get the json dictionary
         if len(apiData) > 0:
             apiOK = True
-            xDict = apiData[0]
-            #print out the key and the value from the dictionary; i.e. the content received from the rest API
-            for key, values in xDict.items():
-                print(key, ': ', values) 
         else:
             print('for some reason we can not provide the data for this employee number today - even if the response is: ', response.reason)
             print('maybe the system has gotten the COVID-19 virus?')
@@ -49,10 +45,7 @@ def check_if_error(response):
 
 def print_the_data(apiData):
     xDict = apiData[0]
-    sapSystem = 'P03'
-    #print out the key and the value from the dictionary; i.e. the content received from the rest API
-    for key, values in xDict.items():
-        print(key, ': ', values) 
+    sapSystem = ''
     return xDict, sapSystem
 
 #the main module

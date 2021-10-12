@@ -18,7 +18,6 @@ def connect_to_api(theToken):
     return response
 #end function
 
-
 def check_if_error(response):
     #testing the response code from the api -> 200 success. 401 no authorization. 404 not found
     if response.status_code > 299:
@@ -42,7 +41,7 @@ def check_if_error(response):
 
 def print_the_data(apiData):
     xDict = apiData[0]
-    sapSystem = 'SAP ECC in Azure'
+    sapSystem = 'not known'
     #print out the key and the value from the dictionary; i.e. the content received from the rest API
     for key, values in xDict.items():
         print(key, ': ', values) 
