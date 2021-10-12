@@ -3,8 +3,6 @@ FROM python:3.9.5-slim-buster
 
 # create the app user
 RUN addgroup --system app && adduser --system --group app
-#RUN addgroup --system --group 101 app 
-#RUN adduser --system --user 101 --group app app 
 
 # create the appropriate directories
 ENV APP_HOME=/sapapi

@@ -6,12 +6,9 @@ import requests
 import config
 
 #connect to the api
-def connect_to_api(theToken):
-    # getting the input needed to authorize and fetch the wanted data
-    inPernr = '686603'
+def connect_to_api(theToken, inPernr):
     #inKey = input('Oppgi subscription for geir owe (from api hub): ')
     inKey = 'dcc2d55f467b43699dfbe87f38b5319c'
-    #theToken = 'mmmm'
 
     #the endpoint URL for api 
     #url = "https://api.gateway.equinor.com/basic-pl-api-employee-internal/v1/Employee"
@@ -59,9 +56,9 @@ def print_the_data(apiData):
     return xDict, sapSystem
 
 #the main module
-def pl_module(theToken):
+def pl_module(theToken, emplNo):
     # get access token
-    response = connect_to_api(theToken)
+    response = connect_to_api(theToken, emplNo)
     apiOK = check_if_error(response)
     employeeData = ''
     sapSystem = ''

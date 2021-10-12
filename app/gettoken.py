@@ -100,9 +100,37 @@ def pldata():
     tokenFromCache = _get_token_from_cache(config.SCOPEPL)
     theToken = tokenFromCache['access_token']
     #read the Basic PL API based on token
-    employee, sapSystem = pl_module(theToken)
+    emplNo = '686603'
+    theToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Imwzc1EtNTBjQ0g0eEJWWkxIVEd3blNSNzY4MCIsImtpZCI6Imwzc1EtNTBjQ0g0eEJWWkxIVEd3blNSNzY4MCJ9.eyJhdWQiOiJjODgwYjY3MC00Y2NkLTQyOTAtYTYxMi0wY2ZhOWY3NzcxZmIiLCJpc3MiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC8zYWE0YTIzNS1iNmUyLTQ4ZDUtOTE5NS03ZmNmMDViNDU5YjAvIiwiaWF0IjoxNjM0MDIxMzIzLCJuYmYiOjE2MzQwMjEzMjMsImV4cCI6MTYzNDAyNTIyMywiYWlvIjoiRTJaZ1lDZ1NDSTNLVzcrclNZNngwOGhUb0M0REFBPT0iLCJhcHBpZCI6IjEyNTllNzhhLWFlMDctNDAzNS04MzhjLTJkNTE2ODI3MTQ1NiIsImFwcGlkYWNyIjoiMSIsImlkcCI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzNhYTRhMjM1LWI2ZTItNDhkNS05MTk1LTdmY2YwNWI0NTliMC8iLCJvaWQiOiJhMmI3ZDgxZi0xZDdhLTQ5ZWYtOWEyZS01MmJlMzc5ZDZjMjIiLCJyaCI6IjAuQVFJQU5hS2tPdUsyMVVpUmxYX1BCYlJac0lybldSSUhyalZBZzR3dFVXZ25GRllDQUFBLiIsInJvbGVzIjpbIkVtcEludGVybmFsIl0sInN1YiI6ImEyYjdkODFmLTFkN2EtNDllZi05YTJlLTUyYmUzNzlkNmMyMiIsInRpZCI6IjNhYTRhMjM1LWI2ZTItNDhkNS05MTk1LTdmY2YwNWI0NTliMCIsInV0aSI6Ilc1VDZWUVliRlVXaXd4QS1FUnZpQUEiLCJ2ZXIiOiIxLjAifQ.VIbpzrlPm4AmQI5kxMN-gYnscyG4Kq3-wkLRHrkJk4hnt0LCWIrufORYvPbFe2kepdh0yBhOVkil_0GlmdlfrfpQrChkh7UUDE1cCfqi_pkWyMYd8fJvuIaqeGK3CyiCIBKYEt9shfUfjzIQb3LbLdbUknYa5nJBBQvJAFZoN-dzSCxl3xFDF5ijCW88TiDi1fBLY8WgUk6VfHTIGndnH8em5ZUF4po3KzXBt5nsNDnhSpIN5IKxtqrsYGTK5wc2-7S1joTzNLb3D8XXRuU6LrxVhCVMrAoXvws0wpE9MQP_RADok2CRybGU8BT4Hwvzt-vBXc-xDEh-LREhFALU5g'
+    employee, sapSystem = pl_module(theToken, emplNo)
     system = sapSystem
     return render_template('empldata.html', title='oData received from Basic PL API', employee=employee, system=system)
+
+######## request input
+# get input from user - employee number ... and maybe a token to use.
+#read PL data
+@app.route('/getpldata')
+def getpldata():
+    # be om ansattnr og eventuelt token
+    return render_template('empInput.html', title='Be om ansatt nr')
+
+@app.route('/registerPL', methods=['POST'])
+def registerPL():
+    # get input data
+    emplNo = '686603'
+    emplNo = request.form.get('emplno')
+    inToken = request.form.get('inToken')
+    if inToken != '':
+        theToken = inToken
+    else:
+        #get token from cache
+        tokenFromCache = _get_token_from_cache(config.SCOPEPL)
+        theToken = tokenFromCache['access_token']
+    #read the Basic PL API based on token
+    employee, sapSystem = pl_module(theToken, emplNo)
+    system = sapSystem
+    return render_template('empldata.html', title='oData received from Basic PL API', employee=employee, system=system)
+####### end request input
 
 #test accessing the SCM api
 @app.route("/scmapi")

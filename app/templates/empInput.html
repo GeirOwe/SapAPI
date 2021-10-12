@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>The best run SAP</h1>
+    <h2>Oppgi ansattnr .... og om du ønsker kan du legge inn access token fra Postman som en test</h2>
+
+    <form action='/registerPL' method='POST'>
+      <input autocomplete='off' autofocus emplno='emplno' placeholder='Ansattnr' type='text'>
+      <input autocomplete='off' inToken='inToken' placeholder='access token' type='text'>
+      <input type='submit' value='Bruk'>
+  </form>
+  
+  {% endblock %}
