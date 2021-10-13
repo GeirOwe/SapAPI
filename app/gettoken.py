@@ -45,10 +45,12 @@ def authorized():
         _save_cache(cache)
     except ValueError:  # Usually caused by CSRF
         pass  # Simply ignore them
-    #check what scope - PL or ODATA API
+    #check what scope - PL, SCM or ODATA API
     currentScope = result.get('scope')
-    if 'Statoil' in currentScope:
+    if currentScope == config.SCOPEPL:
         return redirect(url_for("pllogon"))
+    elif currentScope == config.SCOPESCM:
+        return redirect(url_for("scmlogon"))
     else:
         return redirect(url_for("index"))
 
@@ -76,7 +78,6 @@ def home():
 def about():
     aboutX = ''
     return render_template('about.html', title='About this app', aboutX=aboutX)
-
 
 #test accessing the Basic PL api
 @app.route("/plapi")
