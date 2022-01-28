@@ -45,13 +45,14 @@ def authorized():
         _save_cache(cache)
     except ValueError:  # Usually caused by CSRF
         pass  # Simply ignore them
-    #check what scope - PL, SCM or ODATA API
+    ###### error here - check what scope - PL, SCM or ODATA API
     currentScope = result.get('scope')
-    if currentScope == config.SCOPEPL:
+    print(currentScope, ', ', config.SCOPE, ' & ', config.SCOPESCM)
+    if (currentScope in config.SCOPEPL):
         return redirect(url_for("pllogon"))
-    elif currentScope == config.SCOPESCM:
+    if (currentScope in config.SCOPESCM):
         return redirect(url_for("scmlogon"))
-    else:
+    if (currentScope in config.SCOPE):
         return redirect(url_for("index"))
 
 @app.route("/logout")
